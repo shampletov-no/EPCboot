@@ -1,0 +1,84 @@
+﻿  Building Custom Rule C:/Users/alukashov/Documents/bootloader/src/CMakeLists.txt
+  CMake does not need to re-run because C:\Users\alukashov\Documents\Visual Studio 2013\Projects\EPCboot\result\CMakeFiles\generate.stamp is up-to-date.
+  api.c
+  protosup.c
+C:\Users\alukashov\Documents\bootloader\src\protosup.c(776): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdlib.h(462) : see declaration of 'getenv'
+C:\Users\alukashov\Documents\bootloader\src\protosup.c(785): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+C:\Users\alukashov\Documents\bootloader\src\protosup.c(964): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(304) : see declaration of 'sscanf'
+C:\Users\alukashov\Documents\bootloader\src\protosup.c(1011): warning C4013: 'uri_copy' undefined; assuming extern returning int
+C:\Users\alukashov\Documents\bootloader\src\protosup.c(1011): warning C4047: '=' : 'char *' differs in levels of indirection from 'int'
+C:\Users\alukashov\Documents\bootloader\src\protosup.c(1012): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(195) : see declaration of 'strncpy'
+C:\Users\alukashov\Documents\bootloader\src\protosup.c(1172): warning C4133: 'function' : incompatible types - from 'char [19]' to 'const wchar_t *'
+  util.c
+C:\Users\alukashov\Documents\bootloader\src\util.c(39): warning C4996: 'mbsrtowcs': This function or variable may be unsafe. Consider using mbsrtowcs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\wchar.h(1229) : see declaration of 'mbsrtowcs'
+C:\Users\alukashov\Documents\bootloader\src\util.c(43): warning C4996: 'mbsrtowcs': This function or variable may be unsafe. Consider using mbsrtowcs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\wchar.h(1229) : see declaration of 'mbsrtowcs'
+C:\Users\alukashov\Documents\bootloader\src\util.c(57): warning C4996: 'wcsrtombs': This function or variable may be unsafe. Consider using wcsrtombs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\wchar.h(1238) : see declaration of 'wcsrtombs'
+C:\Users\alukashov\Documents\bootloader\src\util.c(61): warning C4996: 'wcsrtombs': This function or variable may be unsafe. Consider using wcsrtombs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\wchar.h(1238) : see declaration of 'wcsrtombs'
+C:\Users\alukashov\Documents\bootloader\src\util.c(139): warning C4996: 'wcsncpy': This function or variable may be unsafe. Consider using wcsncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(323) : see declaration of 'wcsncpy'
+C:\Users\alukashov\Documents\bootloader\src\util.c(143): warning C4996: 'wcsncat': This function or variable may be unsafe. Consider using wcsncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(316) : see declaration of 'wcsncat'
+C:\Users\alukashov\Documents\bootloader\src\util.c(145): warning C4996: 'wcsncat': This function or variable may be unsafe. Consider using wcsncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(316) : see declaration of 'wcsncat'
+C:\Users\alukashov\Documents\bootloader\src\util.c(151): warning C4996: 'wcsncat': This function or variable may be unsafe. Consider using wcsncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(316) : see declaration of 'wcsncat'
+C:\Users\alukashov\Documents\bootloader\src\util.c(154): warning C4996: 'wcsncat': This function or variable may be unsafe. Consider using wcsncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(316) : see declaration of 'wcsncat'
+C:\Users\alukashov\Documents\bootloader\src\util.c(156): warning C4996: 'wcsncat': This function or variable may be unsafe. Consider using wcsncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(316) : see declaration of 'wcsncat'
+C:\Users\alukashov\Documents\bootloader\src\util.c(288): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\alukashov\Documents\bootloader\src\util.c(298): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\alukashov\Documents\bootloader\src\util.c(380): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\alukashov\Documents\bootloader\src\util.c(391): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\alukashov\Documents\bootloader\src\util.c(454): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(195) : see declaration of 'strncpy'
+C:\Users\alukashov\Documents\bootloader\src\util.c(518): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(195) : see declaration of 'strncpy'
+  bootloader.c
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(20): warning C4101: 'in_buffer' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(22): warning C4101: 'i' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(113): warning C4101: 'in_buffer' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(161): warning C4101: 'i' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(256): warning C4101: 'in_buffer' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(281): warning C4101: 'i' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(302): warning C4101: 'in_buffer' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(304): warning C4101: 'i' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(377): warning C4101: 'in_buffer' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(379): warning C4101: 'i' : unreferenced local variable
+C:\Users\alukashov\Documents\bootloader\src\bootloader.c(415): warning C4101: 'in_buffer' : unreferenced local variable
+  devvirt.c
+C:\Users\alukashov\Documents\bootloader\src\devvirt.c(141): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(195) : see declaration of 'strncpy'
+C:\Users\alukashov\Documents\bootloader\src\devvirt.c(146): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(304) : see declaration of 'sscanf'
+C:\Users\alukashov\Documents\bootloader\src\devvirt.c(159): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(195) : see declaration of 'strncpy'
+C:\Users\alukashov\Documents\bootloader\src\devvirt.c(160): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(195) : see declaration of 'strncpy'
+C:\Users\alukashov\Documents\bootloader\src\devvirt.c(194): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+C:\Users\alukashov\Documents\bootloader\src\devvirt.c(200): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+C:\Users\alukashov\Documents\bootloader\src\devvirt.c(251): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+  commands.c
+  iobuffer.c
+  flowparser.c
+  algorithm.c
+  handlers.c
+  platform-win32.c
+C:\Users\alukashov\Documents\bootloader\src\platform-win32.c(379): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+C:\Users\alukashov\Documents\bootloader\src\platform-win32.c(550): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(195) : see declaration of 'strncpy'
+  Generating Code...
+     Creating library C:/Users/alukashov/Documents/Visual Studio 2013/Projects/EPCboot/result/Release/bootloader.lib and object C:/Users/alukashov/Documents/Visual Studio 2013/Projects/EPCboot/result/Release/bootloader.exp
+  bootloader.vcxproj -> C:\Users\alukashov\Documents\Visual Studio 2013\Projects\EPCboot\result\Release\EPCboot.dll
