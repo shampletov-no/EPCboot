@@ -1,3 +1,0 @@
-C:/Users/alukashov/Documents/Visual Studio 2013/Projects/EPCboot/result/CMakeFiles/bootloader.dir
-C:/Users/alukashov/Documents/Visual Studio 2013/Projects/EPCboot/result/CMakeFiles/ALL_BUILD.dir
-C:/Users/alukashov/Documents/Visual Studio 2013/Projects/EPCboot/result/CMakeFiles/ZERO_CHECK.dir
