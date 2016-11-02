@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
  
-project(EPCbootLoader C)
+project(EPCboot C)
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
     if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -11,15 +11,59 @@ else()
 endif()
 
 add_definitions(-DURPC_EXPORTS)
+ 
+set(HEADERS
+    common.h
+    metadata.h
+    platform.h
+    protosup.h
+    sglib.h
+    types.h
+    util.h
+    bootloader.h
+    atomicrun.h
+    settings.h
 
-include_directories(../srclib)
+    commands.h
+    iobuffer.h
+    flowparser.h
+    algorithm.h
+    macro.h
+    handlers.h
+    api.h
+)
 
-add_executable(EPCbootLoader main.c) 
+set(SOURCES
+    protosup.c
+    util.c
+    bootloader.c
+    devvirt.c
 
-if(WIN32)
-  target_link_libraries(EPCbootLoader EPCboot.lib)
-else()
-  target_link_libraries(EPCbootLoader EPCboot)
-endif()
-  
-  
+    commands.c
+    iobuffer.c
+    flowparser.c
+    algorithm.c
+    handlers.c
+    api.c
+)
+
+IF(WIN32)
+set(SOURCES
+    ${SOURCES}
+    platform-win32.c
+)
+ELSE()
+set(SOURCES
+    ${SOURCES}
+    platform-posix.c
+)
+ENDIF()
+
+
+add_library (EPCboot SHARED ${HEADERS} ${SOURCES})
+
+IF(WIN32)
+target_link_libraries(EPCboot SetupAPI.lib)
+ELSE()
+target_link_libraries(EPCboot pthread)
+ENDIF()
