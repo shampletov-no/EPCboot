@@ -25,7 +25,7 @@ For example:
 Data path is path to new firmware file that need load to controller.
 
 If we write "Old" at the end of command, the old_dev_flag will be set to 1.
-if old_dev_flag == 1 using UPDF command,
+If old_dev_flag == 1 using UPDF command,
 else                 using RBLD command.
 
 For using this program on Windows computers you need to place EPCboot.dll and uploader.exe in the same directory.
@@ -71,7 +71,7 @@ port url - имя устройства.
 data path -- путь к новой прошивке
 	
 Если в конце команды написать Old то old_dev_flag будет установлен в 1.
-если old_dev_flag = 1, то используется UPDF,
+Если old_dev_flag = 1, то используется UPDF,
 иначе                     используется RBLD.
 
 
