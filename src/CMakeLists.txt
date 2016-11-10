@@ -62,8 +62,19 @@ ENDIF()
 
 add_library (EPCboot SHARED ${HEADERS} ${SOURCES})
 
-IF(WIN32)
-target_link_libraries(EPCboot SetupAPI.lib)
-ELSE()
-target_link_libraries(EPCboot pthread)
-ENDIF()
+if(WIN32)
+  target_link_libraries(EPCboot SetupAPI.lib)
+else()
+  target_link_libraries(EPCboot pthread)
+endif()
+
+
+project (EPCbootLoader, C)
+
+add_executable(EPCbootLoader main.c)
+
+if(WIN32)
+  target_link_libraries(EPCbootLoader EPCboot.lib)
+else()
+  target_link_libraries(EPCbootLoader EPCboot)
+endif()
