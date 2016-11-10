@@ -39,10 +39,10 @@ on Linux - go to src subdir and run commands:
 on Windows - use CMake-gui for Windows and create project for Microsoft Visual Studio 2012. Build this project.
 
 Exchange with target device may be tested:
--create BOOTLOG environment variable,
--place log file path to this variable,
--start application that use library,
--read log file.
+- create BOOTLOG environment variable,
+- place log file path to this variable,
+- start application that use library,
+- read log file.
 
 **Русский (Russian)**
 Это приложение использует `urpc_firmware_update()` -- единственную функцию пользовательского API библиотеки EPCboot, 
@@ -86,9 +86,9 @@ data path -- путь к новой прошивке
 под Windows - с помощью CMake-gui для Windows создать проект для Microsoft Visual Studio 2012. Собрать проект.
 
 Обмен с целевым устройством использующий это приложение может быть протестирован следующим образом:
--создаём переменную окружения BOOTLOG,
--помещаем в неё путь к лог-файлу,
--запускаем программу, использующую библиотеку,
--читаем лог.
+- создаём переменную окружения BOOTLOG,
+- помещаем в неё путь к лог-файлу,
+- запускаем программу, использующую библиотеку,
+- читаем лог.
 
 
