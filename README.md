@@ -59,7 +59,7 @@ Start the building. The building will fail:
 
 Repeat the building, it succeeds.
 
-*For using this program on Windows computers you need to place EPCboot.dll and uploader.exe in the same directory.*
+*For using this program on Windows computers you need copy `EPCboot-master/result/Debug` or `EPCboot-master/result/Release` to you target directory and lounch `EPCbootLoader.exe` .*
 
 Exchange with target device may be tested:
 - create BOOTLOG environment variable,
@@ -126,7 +126,7 @@ data path -- путь к новой прошивке
 `Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`.
 Повторить сборку, она завершится успешно.
 
-*Для использования этого приложения под Windows надо собрать EPCboot.dll, которую надо поместить в ту же директорию, что и исполняемый флаг программы.*
+*Для использования этого приложения под Windows надо скопировать в целевую директорию директорию `EPCboot-master/result/Debug` или директорию `EPCboot-master/result/Release`, и запускать `EPCbootLoader.exe`.*
 
 Обмен с целевым устройством использующий это приложение может быть протестирован следующим образом:
 - создаём переменную окружения BOOTLOG,
