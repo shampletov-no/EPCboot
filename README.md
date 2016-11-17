@@ -38,17 +38,25 @@ on Linux - go to src subdir and run commands:
 on Windows - use CMake-gui for Windows and create project for Microsoft Visual Studio 2013.
 Open the project.
 Correct project properties:
-`PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`:
+
+`PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
+
 add the path $ (SolutionDir) Debug to debug (Debug) Build Project option.
 Start the building. The building will fail:
-`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`.
+
+`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`
+
 Repeat the building, it succeeds.
 
 For the working (Release) version of the draft building - in
+
 `PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
+
 add the path $ (SolutionDir) Release.
 Start the building. The building will fail:
-`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`.
+
+`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`
+
 Repeat the building, it succeeds.
 
 *For using this program on Windows computers you need to place EPCboot.dll and uploader.exe in the same directory.*
@@ -99,14 +107,20 @@ data path -- путь к новой прошивке
 под Windows - с помощью CMake-gui для Windows создать проект для Microsoft Visual Studio 2013. 
 Открыть проект.
 Поправить свойства проекта:
-`PROJECT->EPCbootloaderProperties->Configurations Properties->Linker->General->Additional Library Directories` :
+
+`PROJECT->EPCbootloaderProperties->Configurations Properties->Linker->General->Additional Library Directories` 
+
 добавить путь $(SolutionDir)Debug в отладочный (Debug) вариант сборки проекта. 
 Запустить сборку. Сборка завршится с ошибкой:
-`Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`.
+
+`Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`
+
 Повторить сборку, она завершится успешно.
 
 Для рабочего (Release) варианта сборки проекта -- в 
+
 `PROJECT->EPCbootloaderProperties->Configurations Properties->Linker->General->Additional Library Directories`
+
 добавить путь $(SolutionDir)Release.
 Запустить сборку. Сборка завршится с ошибкой:
 `Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`.
