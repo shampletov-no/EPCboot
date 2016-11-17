@@ -28,7 +28,6 @@ If we write "Old" at the end of command, the old_dev_flag will be set to 1.
 If old_dev_flag == 1 using UPDF command,
 else                 using RBLD command.
 
-For using this program on Windows computers you need to place EPCboot.dll and uploader.exe in the same directory.
 
 For build this program you need 
 on Linux - go to src subdir and run commands:
@@ -36,7 +35,23 @@ on Linux - go to src subdir and run commands:
     $ cmake .
     $ make
     
-on Windows - use CMake-gui for Windows and create project for Microsoft Visual Studio 2012. Build this project.
+on Windows - use CMake-gui for Windows and create project for Microsoft Visual Studio 2013.
+Open the project.
+Correct project properties:
+`PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`:
+add the path $ (SolutionDir) Debug to debug (Debug) Build Project option.
+Start the building. The building will fail:
+`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`.
+Repeat the building, it succeeds.
+
+For the working (Release) version of the draft building - in
+`PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
+add the path $ (SolutionDir) Release.
+Start the building. The building will fail:
+`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`.
+Repeat the building, it succeeds.
+
+*For using this program on Windows computers you need to place EPCboot.dll and uploader.exe in the same directory.*
 
 Exchange with target device may be tested:
 - create BOOTLOG environment variable,
@@ -75,15 +90,29 @@ data path -- путь к новой прошивке
 иначе                     используется RBLD.
 
 
-Для использования этого приложения под Windows надо собрать EPCboot.dll, которую надо поместить в ту же директорию, что и исполняемый флаг программы.
-
 СБОРКА программы под
 под Linux - в поддиректории src запустить команды:
 
     $ cmake .
     $ make
     
-под Windows - с помощью CMake-gui для Windows создать проект для Microsoft Visual Studio 2012. Собрать проект.
+под Windows - с помощью CMake-gui для Windows создать проект для Microsoft Visual Studio 2013. 
+Открыть проект.
+Поправить свойства проекта:
+`PROJECT->EPCbootloaderProperties->Configurations Properties->Linker->General->Additional Library Directories` :
+добавить путь $(SolutionDir)Debug в отладочный (Debug) вариант сборки проекта. 
+Запустить сборку. Сборка завршится с ошибкой:
+`Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`.
+Повторить сборку, она завершится успешно.
+
+Для рабочего (Release) варианта сборки проекта -- в 
+`PROJECT->EPCbootloaderProperties->Configurations Properties->Linker->General->Additional Library Directories`
+добавить путь $(SolutionDir)Release.
+Запустить сборку. Сборка завршится с ошибкой:
+`Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`.
+Повторить сборку, она завершится успешно.
+
+*Для использования этого приложения под Windows надо собрать EPCboot.dll, которую надо поместить в ту же директорию, что и исполняемый флаг программы.*
 
 Обмен с целевым устройством использующий это приложение может быть протестирован следующим образом:
 - создаём переменную окружения BOOTLOG,
