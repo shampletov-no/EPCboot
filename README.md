@@ -1,7 +1,7 @@
 ﻿**English**
 The aim of this programm is loading firmware to UltraRay XIMC controllers.
 
-*Usage*: `Uploader <port url> <data path> [Old]`
+*Usage*: `EPCbootLoader <port url> <data path> [Old]`
 
 *port url* is device name.
 Device name has form "com:port", or "emu:file" for virtual device.
