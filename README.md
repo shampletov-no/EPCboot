@@ -62,7 +62,8 @@ Exchange with target device may be tested:
     "emu:///c:/temp/virtual56.dat",
     "emu:///c:/temp/virtual56.dat?serial=123"
 
-*data path* -- путь к новой прошивке
+*data path* -- путь к новой прошивке.
+
 *Old* добавляется для старых устройств, использующих команду UPDF вместо RBLD.
 
 СБОРКА программы 
