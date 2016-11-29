@@ -17,7 +17,7 @@ For example:
 
 *data path* is path to new firmware file that need load to controller.
 
-*old* for using UPDF on old controller versions vs RBLD on new.
+*Old* for using UPDF on old controller versions vs RBLD on new.
 
 For build this program you need 
 **on Linux** - go to src subdir and run commands:
@@ -50,7 +50,7 @@ Exchange with target device may be tested:
 
 *Использование*: `EPCBootLoader <port url> <data path> [Old]`
 
-port url - имя устройства.
+*port url* - имя устройства.
 Имя устройства имеет вид "com:port" или "emu:file" для виртуального устройства.
 Для USB-COM устройства "port" это имя устройства в ОС.
 Например:
@@ -62,8 +62,8 @@ port url - имя устройства.
     "emu:///c:/temp/virtual56.dat",
     "emu:///c:/temp/virtual56.dat?serial=123"
 
-data path -- путь к новой прошивке
-Old добавляется для старых устройств, использующих команду UPDF вместо RBLD.
+*data path* -- путь к новой прошивке
+*Old* добавляется для старых устройств, использующих команду UPDF вместо RBLD.
 
 СБОРКА программы 
 **под Linux** - в поддиректории src запустить команды:
