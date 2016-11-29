@@ -1,16 +1,9 @@
 ﻿**English**
-This console application upload urpc firmware.
-It use unic user API function urpc_firmware_update() of EPCboot library that call controller send message functions:
-
-    rdld (aka updf) for reboot to bootloader from main firmware,
-    close port, 2 sec timeout,
-    send  conn, wdat, wdat, ..., wdat, disc,
-    rest 
+The aim of this programm is loading firmware to UltraRay XIMC controllers.
 
 *Usage*: `Uploader <port url> <data path> [Old]`
-Old for using UPDF vs RBLD.
 
-port url is device name.
+*port url* is device name.
 Device name has form "com:port", or "emu:file" for virtual device.
 In case of USB-COM port the "port" is the OS device name.
 For example:
@@ -22,44 +15,29 @@ For example:
     "emu:///c:/temp/virtual56.dat",
     "emu:///c:/temp/virtual56.dat?serial=123"
 
-Data path is path to new firmware file that need load to controller.
+*data path* is path to new firmware file that need load to controller.
 
-If we write "Old" at the end of command, the old_dev_flag will be set to 1.
-If old_dev_flag == 1 using UPDF command,
-else                 using RBLD command.
-
+*old* for using UPDF on old controller versions vs RBLD on new.
 
 For build this program you need 
-on Linux - go to src subdir and run commands:
+**on Linux** - go to src subdir and run commands:
 
     $ cmake .
     $ make
     
-on Windows - use CMake-gui for Windows and create project for Microsoft Visual Studio 2013.
-Open the project.
-Correct project properties:
+**on Windows** - use CMake-gui for Windows and create project for Microsoft Visual Studio 2013.
+(https://www.johnlamp.net/cmake-tutorial-3-gui-tool.html)
+
+Open the project. Select some debugging or release version of the project we will build.
+
+Build the library: go to subproject EPCboot and build it.
+
+Go to EPCbootLoader. Correct project properties:
 
 `PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
 
-add the path $ (SolutionDir) Debug to debug (Debug) Build Project option.
-Start the building. The building will fail:
-
-`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`
-
-Repeat the building, it succeeds.
-
-For the working (Release) version of the draft building - in
-
-`PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
-
-add the path $ (SolutionDir) Release.
-Start the building. The building will fail:
-
-`Error 1 error LNK1181: can not open input file 'EPCboot.lib' LINK EPCbootLoader`
-
-Repeat the building, it succeeds.
-
-*For using this program on Windows computers you need copy `EPCboot-master/result/Debug` or `EPCboot-master/result/Release` to you target directory and lounch `EPCbootLoader.exe` .*
+and add the path $(TargetDir).
+Build. 
 
 Exchange with target device may be tested:
 - create BOOTLOG environment variable,
@@ -68,16 +46,9 @@ Exchange with target device may be tested:
 - read log file.
 
 **Русский (Russian)**
-Это приложение использует `urpc_firmware_update()` -- единственную функцию пользовательского API библиотеки EPCboot, 
-которая внутри себя вызывает функции отправки сообщений контроллеру по алгоритму:
+Это приложение предназначено для того, чтобы заливать прошивки в контроллеры UltraRay XIMC.
 
-    сначала отсылаем rbld (или её алиас updf), чтобы перезагрузиться из основной прошивки в бутлоадер
-    закрываем порт, таймаут секунды 2, открываем порт
-    шлем conn, wdat, wdat, ..., wdat, disc
-    rest
-
-*Usage*: `Uploader <port url> <data path> [Old]`
-Old для использования UPDF вместо RBLD.
+*Использование*: `EPCBootLoader <port url> <data path> [Old]`
 
 port url - имя устройства.
 Имя устройства имеет вид "com:port" или "emu:file" для виртуального устройства.
@@ -92,41 +63,26 @@ port url - имя устройства.
     "emu:///c:/temp/virtual56.dat?serial=123"
 
 data path -- путь к новой прошивке
-	
-Если в конце команды написать Old то old_dev_flag будет установлен в 1.
-Если old_dev_flag = 1, то используется UPDF,
-иначе                     используется RBLD.
+Old добавляется для старых устройств, использующих команду UPDF вместо RBLD.
 
-
-СБОРКА программы под
-под Linux - в поддиректории src запустить команды:
+СБОРКА программы 
+**под Linux** - в поддиректории src запустить команды:
 
     $ cmake .
     $ make
     
-под Windows - с помощью CMake-gui для Windows создать проект для Microsoft Visual Studio 2013. 
-Открыть проект.
-Поправить свойства проекта:
+**под Windows** - с помощью CMake-gui для Windows создать проект для Microsoft Visual Studio 2013. 
+(см. https://www.johnlamp.net/cmake-tutorial-3-gui-tool.html)
 
-`PROJECT->EPCbootloaderProperties->Configurations Properties->Linker->General->Additional Library Directories` 
+Открыть проект. Выбрать какую, отладочную (Debug) или основную (Release) версию проекта мы будем собирать.
 
-добавить путь $(SolutionDir)Debug в отладочный (Debug) вариант сборки проекта. 
-Запустить сборку. Сборка завршится с ошибкой:
+Собрать библиотеку: перейти к подпроекту EPCBoot и собрать его.
 
-`Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`
+Перейти к подпроекту EPCBootLoader. Поправить свойства проекта:
 
-Повторить сборку, она завершится успешно.
+`PROJECT->EPCbootLoaderProperties->Configurations Properties->Linker->General->Additional Library Directories` 
 
-Для рабочего (Release) варианта сборки проекта -- в 
-
-`PROJECT->EPCbootloaderProperties->Configurations Properties->Linker->General->Additional Library Directories`
-
-добавить путь $(SolutionDir)Release.
-Запустить сборку. Сборка завршится с ошибкой:
-`Error	1	error LNK1181: cannot open input file 'EPCboot.lib'	LINK	EPCbootLoader`.
-Повторить сборку, она завершится успешно.
-
-*Для использования этого приложения под Windows надо скопировать в целевую директорию директорию `EPCboot-master/result/Debug` или директорию `EPCboot-master/result/Release`, и запускать `EPCbootLoader.exe`.*
+добавить путь $(TargetDir). Собрать.
 
 Обмен с целевым устройством использующий это приложение может быть протестирован следующим образом:
 - создаём переменную окружения BOOTLOG,
