@@ -45,7 +45,7 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
   memset(&en_output.reserved, 0, sizeof(en_output.reserved));
   en_output.Result = 0;
 
-  fprintf(stderr, "booloader.dll version 0.0.1\n");
+  fprintf(stderr, "EPCboot version 0.0.1\n");
 
   if (len % DATA_SEGM_LEN == 0) 
   {
@@ -62,15 +62,17 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
   id = open_device(name);
   if (id == device_undefined) 
   {
-    fprintf(stderr, "booloader.dll: Can't open device %s\n", name);
+    fprintf(stderr, "EPCboot: Can't open device %s\n", name);
     return result_error;
   }
+       
+  msec_sleep(SLEEP_TIMEOUT);
 
   if (old_dev_flag) 
   {
     if (update_firmware(id) != result_ok) 
     {
-      fprintf(stderr, "booloader.dll: Reboot error\n");
+      fprintf(stderr, "EPCboot: Reboot error\n");
       close_device(&id);
       return result_error;
     }
@@ -79,7 +81,7 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
   {
     if (reboot_to_bootloader(id) != result_ok) 
     {
-       fprintf(stderr, "booloader.dll: Reboot error\n");
+       fprintf(stderr, "EPCboot: Reboot error\n");
        close_device(&id);
        return result_error;
     }
@@ -87,26 +89,27 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
 
   if (close_device(&id) != result_ok) 
   {
-    fprintf(stderr, "booloader.dll: Close device (1) error\n");
+    fprintf(stderr, "EPCboot: Close device (1) error\n");
     return result_error;
   }
+       
   msec_sleep(SLEEP_TIMEOUT);
 
   id = open_device(name);
   if (id == device_undefined) 
   {
-    fprintf(stderr, "booloader.dll: Open device error\n");
+    fprintf(stderr, "EPCboot: Open device error\n");
     return result_error;
   }
 
   if (start_session(id, &st_input, &st_output) != result_ok) 
   {
-    fprintf(stderr, "booloader.dll: Start sesion error\n");
+    fprintf(stderr, "EPCboot: Start sesion error\n");
     close_device(&id);
     return result_error;
   }
 
-  fprintf(stderr, "booloader.dll: start session Result = %d\n", st_output.Result);
+  fprintf(stderr, "EPCboot: start session Result = %d\n", st_output.Result);
 
   for (i = 0; i < dim; i++) 
   {
@@ -115,17 +118,17 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
     cntr_len += DATA_SEGM_LEN;
     if (write_data(id, &wd) != result_ok) 
     {
-      fprintf(stderr, "booloader.dll:  %d data segment write fail.");
+      fprintf(stderr, "EPCboot:  %d data segment write fail.");
       end_session(id, &en_input, &en_output);
       close_device(&id);
       return result_error;
     }
   }
 
-  fprintf(stderr, "booloader.dll: Ok!! %d  %d\n", cntr_len, len);
+  fprintf(stderr, "EPCboot: Ok!! %d  %d\n", cntr_len, len);
 
   if (end_session(id, &en_input, &en_output) != result_ok) return result_error;
-  fprintf(stderr, "booloader.dll: end session Result = %d\n", en_output.Result);
+  fprintf(stderr, "EPCboot: end session Result = %d\n", en_output.Result);
 
   if (close_device(&id) != result_ok) return result_error;
   return result_ok;
