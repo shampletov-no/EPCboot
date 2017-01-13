@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
  
-project(EPCboot C)
+project(epcbootlib C)
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
     if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -60,21 +60,22 @@ set(SOURCES
 ENDIF()
 
 
-add_library (EPCboot SHARED ${HEADERS} ${SOURCES})
+add_library (epcbootlib SHARED ${HEADERS} ${SOURCES})
 
 if(WIN32)
-  target_link_libraries(EPCboot SetupAPI.lib)
+  target_link_libraries(epcbootlib SetupAPI.lib)
 else()
-  target_link_libraries(EPCboot pthread)
+  target_link_libraries(epcbootlib pthread)
 endif()
 
 
-project (EPCbootLoader, C)
+project (epcboot, C)
 
-add_executable(EPCbootLoader main.c)
+add_executable(epcboot main.c)
 
 if(WIN32)
-  target_link_libraries(EPCbootLoader EPCboot.lib)
+  target_link_libraries(epcboot epcbootlib.lib)
 else()
-  target_link_libraries(EPCbootLoader EPCboot)
+  target_link_libraries(epcboot epcbootlib
+          )
 endif()

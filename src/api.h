@@ -199,9 +199,7 @@ extern "C"
 #define LOGLEVEL_DEBUG		0x04
 	//@}
 
-
-
-/** 
+/**
 	* \~english
 	* The unic user API function that call controller send message functions:
 	*	rdld (aka updf) for reboot to bootloader from main firmware,
@@ -242,7 +240,11 @@ extern "C"
 	* @param[in] len -- длина новой прошивки в байтах
 	* @param[in] old_dev_flag = 1 -- старая версия устройства, используется UPDF; = 0 -- RBLD
 	*/
-	URPC_VIS result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* data, int len, int old_dev_flag);
+	URPC_VIS result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* data, int len);
+
+    URPC_VIS result_t URPC_CALLCONV urpc_write_key(const char* name, const char* key);
+
+    URPC_VIS result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsigned int serial, char* hard_id);
 
 #if defined(__cplusplus)
 };
