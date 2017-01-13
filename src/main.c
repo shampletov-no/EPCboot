@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
         case 'I':
             if (!check_url(url)) break;
             begin_log('I', url, serial, hard);
-            res = urpc_write_ident(url, key, (uint)atoi(serial), hard);
+            res = urpc_write_ident(url, key, (unsigned int)atoi(serial), hard);
         break;
 
         case 'F':

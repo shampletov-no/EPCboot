@@ -17,6 +17,7 @@ enum { SLEEP_TIMEOUT = 2000,
        DATA_SEGM_LEN = 128,
        KEY_LEN = 32};
 
+static int legacy = 0;
 
 static void print_buf(uint8_t* buf, int bufsize) 
 {
@@ -67,12 +68,12 @@ static int check_url_form(const char* url)
     return -1;
   }
 
-  if (strncmp(url, "com://", 6) != 0 && strncmp(url, "emu://", 6) != 0)
+/*  if (strncmp(url, "com://", 6) != 0 && strncmp(url, "emu://", 6) != 0)
   {
     fprintf(stderr, "You write uncorrect device URL. You mast put 'com://' or 'emu://' at begin of url.\n");
     fprintf(stderr, "Try use com://%s\n", url);
-    return -1;
-  }
+    return -1;  
+  } */
 
   return 0;
 }
@@ -91,14 +92,17 @@ static device_t update_open(const char *name)
   if (id == device_undefined)
   {
     fprintf(stderr, "EPCboot: Can't open device %s\n", name);
+	if(strncmp(name, "com:", 4) != 0 && strncmp(name, "emu:", 4) != 0)
+		fprintf(stderr, "You write uncorrect device URL. You mast put 'com:' or 'emu:' at begin of url.\n");
     return device_undefined;
   }
 
   msec_sleep(SLEEP_TIMEOUT);
 
-  if (update_firmware(id) != result_ok)
+  if (reboot_to_bootloader(id) != result_ok)
   {
-    if (reboot_to_bootloader(id) != result_ok)
+    legacy = 1;
+    if (update_firmware(id) != result_ok)
     {
       fprintf(stderr, "EPCboot: Reboot error.\n");
       close_device(&id);
@@ -117,7 +121,7 @@ static device_t update_open(const char *name)
   id = open_device(name);
   if (id == device_undefined)
   {
-    fprintf(stderr, "EPCboot: Open device error.\n");
+    fprintf(stderr, "EPCboot: Open device %s error.\n", name);
   }
 
   return id;
@@ -227,7 +231,10 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   result_t res;
   set_serial_number_t ssn;
   get_identity_information_t out;
+  get_serial_number_t legacy_sn_out;
+  get_device_information_t legacy_di_out;
   char* s;
+  int cmp = 0;
 
   id = update_open(name);
   if (id == device_undefined) return result_error;
@@ -257,27 +264,62 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   res = set_serial_number(id, &ssn);
   if (res != result_ok)
   {
-    fprintf(stderr, "EPCBoot: Can't set ident information to device.\n");
+    fprintf(stderr, "EPCBoot: Can't set ident information to device. set_serial_number() return %d\n", res);
     return res;
   }
 
-  res = get_identity_information(id, &out);
-  if (res != result_ok)
+  if (legacy)
   {
-    fprintf(stderr, "EPCBoot: Can't get ident information from device.\n");
-    return res;
-  }
+	  memset((void*)(&legacy_sn_out), 0, sizeof(legacy_sn_out));
+	  res = get_serial_number(id, &legacy_sn_out);
+	  if ( res != result_ok)
+	  {
+		  fprintf(stderr, "EPCBoot: Can't get_serial_number(), return %d", res);
+		  return res;
+	  }
 
-  if (out.HardwareMajor  == ssn.HardwareMajor  &&
-      out.HardwareMinor  == ssn.HardwareMinor  &&
-      out.HardwareBugfix == ssn.HardwareBugfix &&
-      out.SerialNumber   == ssn.SerialNumber)
-  {
-    fprintf(stderr, "Identy information was wrote correctly.\n");
-    return result_ok;
+	  memset((void*)(&legacy_di_out), 0, sizeof(legacy_di_out));
+	  res = get_device_information(id, &legacy_di_out);
+	  if (res != result_ok)
+	  {
+		  fprintf(stderr, "EPCBoot: Can't get_device_information(), return %d", res);
+		  return res;
+	  }
+
+	  if (legacy_sn_out.SerialNumber == ssn.SerialNumber &&
+		  legacy_di_out.Major == ssn.HardwareMajor &&
+		  legacy_di_out.Minor == ssn.HardwareMinor &&
+		  legacy_di_out.Release == ssn.HardwareBugfix)
+	  {
+		  cmp = 1;
+	  }
   }
   else
   {
+    memset((void*)(&out), 0, sizeof(out));
+    res = get_identity_information(id, &out);
+    if (res != result_ok)
+    {
+      fprintf(stderr, "EPCBoot: Can't get ident information from device. get_identity_information() return %d\n", res);
+      return res;
+    }
+
+    if (out.HardwareMajor == ssn.HardwareMajor  &&
+    out.HardwareMinor == ssn.HardwareMinor  &&
+    out.HardwareBugfix == ssn.HardwareBugfix &&
+    out.SerialNumber == ssn.SerialNumber)
+    {
+      cmp = 1;
+    }
+  }
+
+  if (cmp)
+    {
+      fprintf(stderr, "Identy information was wrote correctly.\n");
+      return result_ok;
+    }
+    else
+   {
     fprintf(stderr, "Identy information was wrote with some errors.\n");
     return result_error;
   }
@@ -285,7 +327,7 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
  // res = close_device(&id);
  // if ( res!= result_ok) return res;
 
- // return result_ok;
+  return result_ok;
 }
 
 #if defined(__cplusplus)
