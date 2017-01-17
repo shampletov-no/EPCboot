@@ -13,7 +13,7 @@ extern "C"
 {
 #endif
 
-enum { SLEEP_TIMEOUT = 2000,
+enum { SLEEP_TIMEOUT = 30000,
        DATA_SEGM_LEN = 128,
        KEY_LEN = 32};
 
@@ -142,11 +142,11 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
   int cntr_len = 0;
 
   memset(&st_input, 0, sizeof(st_input));
-  memset(&st_output.reserved, 0, sizeof(st_output.reserved));
-  st_output.Result = 0;
+  memset(&st_output, 0, sizeof(st_output));
+ // st_output.Result = 0;
   memset(&en_input, 0, sizeof(en_input));
-  memset(&en_output.reserved, 0, sizeof(en_output.reserved));
-  en_output.Result = 0;
+  memset(&en_output, 0, sizeof(en_output));
+ // en_output.Result = 0;
 
   //fprintf(stderr, "EPCboot version 0.2.0\n");
 
@@ -218,8 +218,8 @@ result_t URPC_CALLCONV urpc_write_key(const char* name, const char* key)
   if (res != result_ok) return res;
   printf("Ok\n");
 
-  //res = close_device(&id);
-  //if ( res!= result_ok) return res;
+  res = close_device(&id);
+  if ( res!= result_ok) return res;
 
   return result_ok;
 }
@@ -232,15 +232,14 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   set_serial_number_t ssn;
   get_identity_information_t out;
   get_serial_number_t legacy_sn_out;
-  get_device_information_t legacy_di_out;
+  //get_device_information_t legacy_di_out;
   char* s;
-  int cmp = 0;
 
   id = update_open(name);
   if (id == device_undefined) return result_error;
 
   memset((void*)(&ssn), 0, sizeof(ssn));
- // if (key_parse(key, ssn.Key) != 0) return result_error;
+  if (key_parse(key, ssn.Key) != 0) return result_error;
   ssn.SerialNumber = serial;
 
   char *next;
@@ -268,8 +267,10 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
     return res;
   }
 
+
   if (legacy)
   {
+	  printf("Use legacy.\n");
 	  memset((void*)(&legacy_sn_out), 0, sizeof(legacy_sn_out));
 	  res = get_serial_number(id, &legacy_sn_out);
 	  if ( res != result_ok)
@@ -278,20 +279,31 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
 		  return res;
 	  }
 
-	  memset((void*)(&legacy_di_out), 0, sizeof(legacy_di_out));
+	/*  memset((void*)(&legacy_di_out), 0, sizeof(legacy_di_out));
 	  res = get_device_information(id, &legacy_di_out);
 	  if (res != result_ok)
 	  {
 		  fprintf(stderr, "EPCBoot: Can't get_device_information(), return %d", res);
 		  return res;
-	  }
+	  }*/
 
-	  if (legacy_sn_out.SerialNumber == ssn.SerialNumber &&
+	  if (legacy_sn_out.SerialNumber == ssn.SerialNumber)/* &&
 		  legacy_di_out.Major == ssn.HardwareMajor &&
 		  legacy_di_out.Minor == ssn.HardwareMinor &&
-		  legacy_di_out.Release == ssn.HardwareBugfix)
+		  legacy_di_out.Release == ssn.HardwareBugfix)*/
 	  {
-		  cmp = 1;
+		  fprintf(stderr, "Identy information was wrote correctly.\n");
+		  return result_ok;
+	  }
+	  else
+	  {
+		/*  fprintf(stderr, "ERROR: try write %d   %d.%d.%d    Read %d   %d.%d.%d\n", 
+			  ssn.SerialNumber, ssn.HardwareMajor, ssn.HardwareMinor, ssn.HardwareBugfix,
+			  legacy_sn_out.SerialNumber, legacy_di_out.Major, legacy_di_out.Minor, legacy_di_out.Release);*/
+		  fprintf(stderr, "ERROR: try write %d   %d.%d.%d    Read %d\n",
+			  ssn.SerialNumber, ssn.HardwareMajor, ssn.HardwareMinor, ssn.HardwareBugfix,
+			  legacy_sn_out.SerialNumber);
+		  return result_error;
 	  }
   }
   else
@@ -309,23 +321,17 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
     out.HardwareBugfix == ssn.HardwareBugfix &&
     out.SerialNumber == ssn.SerialNumber)
     {
-      cmp = 1;
+		fprintf(stderr, "Identy information was wrote correctly.\n");
+		return result_ok;
     }
+	else
+	{
+		fprintf(stderr, "ERROR: try write %d   %d.%d.%d    Read %d   %d.%d.%d\n",
+			ssn.SerialNumber, ssn.HardwareMajor, ssn.HardwareMinor, ssn.HardwareBugfix,
+			out.SerialNumber, out.HardwareMajor, out.HardwareMinor, out.HardwareBugfix);
+		return result_error;
+	}
   }
-
-  if (cmp)
-    {
-      fprintf(stderr, "Identy information was wrote correctly.\n");
-      return result_ok;
-    }
-    else
-   {
-    fprintf(stderr, "Identy information was wrote with some errors.\n");
-    return result_error;
-  }
-
- // res = close_device(&id);
- // if ( res!= result_ok) return res;
 
   return result_ok;
 }
