@@ -74,11 +74,10 @@ endif()
 
 project (epcboot, C)
 
-add_executable(epcboot main.c)
-
 if(WIN32)
+  add_executable(epcboot main.c getopt.c)
   target_link_libraries(epcboot epcbootlib.lib)
 else()
-  target_link_libraries(epcboot epcbootlib
-          )
+  add_executable(epcboot main.c)
+  target_link_libraries(epcboot epcbootlib)
 endif()

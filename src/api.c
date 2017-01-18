@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 
-enum { SLEEP_TIMEOUT = 30000,
+enum { SLEEP_TIMEOUT = 5000,
        DATA_SEGM_LEN = 128,
        KEY_LEN = 32};
 

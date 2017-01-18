@@ -2,7 +2,7 @@
 #include <string.h>
 #include "aes.h"
 
-const int AES_BLOCK_SIZE = 16;
+#define AES_BLOCK_SIZE 16
 
 static void memxor(void* dest, const void* src, uint16_t n)
 {
@@ -14,7 +14,7 @@ static void memxor(void* dest, const void* src, uint16_t n)
 	}
 }
 
-result_t encrypted_key(init_random_t *irnd, in_write_key_t *key)
+result_t URPC_CALLCONV encrypted_key(init_random_t *irnd, in_write_key_t *key)
 {
 	uint8_t cyph_key[WKEY_SIZE];
 	uint8_t enc_iv[AES_BLOCK_SIZE];
