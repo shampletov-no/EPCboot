@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CPP_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/aes.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/protosup.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/api.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/bootloader.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/settings.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/platform-posix.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/types.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/bootloader.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/aes.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sglib.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/main.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/handlers.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/util.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/handlers.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/util.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/devvirt.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/metadata.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/devvirt.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/common.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/api.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/macro.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/commands.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/encrypt_key.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/iobuffer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/atomicrun.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/commands.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/iobuffer.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/algorithm.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/algorithm.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/platform.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/flowparser.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/flowparser.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/protosup.h" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Header Search Paths">
+        <CLASSES>
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

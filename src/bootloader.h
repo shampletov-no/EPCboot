@@ -12,6 +12,7 @@ extern "C"
 {
 #endif
 
+#define WKEY_SIZE 32
 
 /**
     * \~english
@@ -316,6 +317,20 @@ void URPC_CALLCONV msec_sleep (unsigned int msec);
 	* @param version буфер для строки с версией, 32 байт достаточно
 	*/
 void URPC_CALLCONV bootloader_version (char* version);
+
+/**
+ * \~english
+ * Encripted of main device key
+ * @param irnd an random short key
+ * @param key is a key for encripted. At end of function it must to be encripted.
+ * @return result_ok if success.
+ * \~russian
+ * Шифрование основного ключа
+ * @param irnd случайный короткий ключ
+ * @param key ключ для шифрования. На выходе из процедуры должен быть зашифрован.
+ * @return result_ok в случае успеха.
+ */
+result_t URPC_CALLCONV encrypted_key(init_random_t *irnd, in_write_key_t *key);
 
 #if !defined(MATLAB_IMPORT) && !defined(LABVIEW64_IMPORT) && !defined(LABVIEW32_IMPORT)
 #include <wchar.h>

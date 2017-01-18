@@ -31,6 +31,7 @@ set(HEADERS
     macro.h
     handlers.h
     api.h
+    aes.h
 )
 
 set(SOURCES
@@ -45,6 +46,8 @@ set(SOURCES
     algorithm.c
     handlers.c
     api.c
+    aes.c
+    encrypt_key.c
 )
 
 IF(WIN32)

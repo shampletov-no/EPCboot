@@ -1,12 +1,8 @@
 #include "common.h"
 #include "api.h"
 #include "platform.h"
-//#include "util.h"
 #include "bootloader.h"
 #include "commands.h"
-
-//#include <string.h>
-//#include <stdlib.h>
 
 #if defined(__cplusplus)
 extern "C"
@@ -67,13 +63,6 @@ static int check_url_form(const char* url)
     fprintf(stderr, "EPCboot: empty device url.\n");
     return -1;
   }
-
-/*  if (strncmp(url, "com://", 6) != 0 && strncmp(url, "emu://", 6) != 0)
-  {
-    fprintf(stderr, "You write uncorrect device URL. You mast put 'com://' or 'emu://' at begin of url.\n");
-    fprintf(stderr, "Try use com://%s\n", url);
-    return -1;  
-  } */
 
   return 0;
 }
@@ -142,13 +131,11 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
   int cntr_len = 0;
 
   memset(&st_input, 0, sizeof(st_input));
-  memset(&st_output, 0, sizeof(st_output));
- // st_output.Result = 0;
+  memset(&st_output.reserved, 0, sizeof(st_output.reserved));
+  st_output.Result = 0;
   memset(&en_input, 0, sizeof(en_input));
-  memset(&en_output, 0, sizeof(en_output));
- // en_output.Result = 0;
-
-  //fprintf(stderr, "EPCboot version 0.2.0\n");
+  memset(&en_output.reserved, 0, sizeof(en_output.reserved));
+  en_output.Result = 0;
 
   if (len % DATA_SEGM_LEN == 0) 
   {
@@ -159,8 +146,6 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
     fprintf(stderr, "Data is not correct: data_len=%d segm_len=%d, is not divisible.\n");
     return result_error;
   }
-
-  //fprintf(stderr, "data length = %d, segm num = %d\n", len, dim);
 
   id = update_open(name);
   if (id == device_undefined) return result_error;
@@ -203,6 +188,7 @@ result_t URPC_CALLCONV urpc_write_key(const char* name, const char* key)
   device_t id;
   in_write_key_t in;
   out_write_key_t out;
+  init_random_t irnd;
   result_t res;
 
   id = update_open(name);
@@ -210,8 +196,19 @@ result_t URPC_CALLCONV urpc_write_key(const char* name, const char* key)
 
   memset((void*)(&in), 0, sizeof(in));
   memset((void*)(&out), 0, sizeof(out));
+  memset((void*)(&irnd), 0, sizeof(irnd));
 
   if (key_parse(key, in.Key) != 0) return result_error;
+
+  //irnd -- use random keys.
+  res = init_random(id, &irnd);
+  if (res != result_ok)
+  {
+    fprintf(stderr, "Can't init random. %d", res);
+    return res;
+  }
+
+  encrypted_key(&irnd, &in);
 
   printf("Please wait 1-2 min.\n");
   res = write_key(id, &in, &out);
@@ -232,14 +229,30 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   set_serial_number_t ssn;
   get_identity_information_t out;
   get_serial_number_t legacy_sn_out;
-  //get_device_information_t legacy_di_out;
   char* s;
+  in_write_key_t key_struct;
+  init_random_t irnd;
 
   id = update_open(name);
   if (id == device_undefined) return result_error;
 
   memset((void*)(&ssn), 0, sizeof(ssn));
-  if (key_parse(key, ssn.Key) != 0) return result_error;
+  memset((void*)(&irnd), 0, sizeof(irnd));
+  memset((void*)(&key_struct), 0, sizeof(key_struct));
+
+  if (key_parse(key, key_struct.Key) != 0) return result_error;
+
+  //irnd -- use random keys.
+  res = init_random(id, &irnd);
+  if (res != result_ok)
+  {
+    fprintf(stderr, "Can't init random. %d", res);
+        return res;
+  }
+
+  encrypted_key(&irnd, &key_struct);
+
+  memcpy(ssn.Key, key_struct.Key, WKEY_SIZE);
   ssn.SerialNumber = serial;
 
   char *next;
@@ -279,27 +292,13 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
 		  return res;
 	  }
 
-	/*  memset((void*)(&legacy_di_out), 0, sizeof(legacy_di_out));
-	  res = get_device_information(id, &legacy_di_out);
-	  if (res != result_ok)
-	  {
-		  fprintf(stderr, "EPCBoot: Can't get_device_information(), return %d", res);
-		  return res;
-	  }*/
-
-	  if (legacy_sn_out.SerialNumber == ssn.SerialNumber)/* &&
-		  legacy_di_out.Major == ssn.HardwareMajor &&
-		  legacy_di_out.Minor == ssn.HardwareMinor &&
-		  legacy_di_out.Release == ssn.HardwareBugfix)*/
+	  if (legacy_sn_out.SerialNumber == ssn.SerialNumber)
 	  {
 		  fprintf(stderr, "Identy information was wrote correctly.\n");
 		  return result_ok;
 	  }
 	  else
 	  {
-		/*  fprintf(stderr, "ERROR: try write %d   %d.%d.%d    Read %d   %d.%d.%d\n", 
-			  ssn.SerialNumber, ssn.HardwareMajor, ssn.HardwareMinor, ssn.HardwareBugfix,
-			  legacy_sn_out.SerialNumber, legacy_di_out.Major, legacy_di_out.Minor, legacy_di_out.Release);*/
 		  fprintf(stderr, "ERROR: try write %d   %d.%d.%d    Read %d\n",
 			  ssn.SerialNumber, ssn.HardwareMajor, ssn.HardwareMinor, ssn.HardwareBugfix,
 			  legacy_sn_out.SerialNumber);
