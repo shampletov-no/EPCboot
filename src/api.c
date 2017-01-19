@@ -81,8 +81,10 @@ static device_t update_open(const char *name)
   if (id == device_undefined)
   {
     fprintf(stderr, "EPCboot: Can't open device %s\n", name);
-	if(strncmp(name, "com:", 4) != 0 && strncmp(name, "emu:", 4) != 0)
+	if (strncmp(name, "com:", 4) != 0 && strncmp(name, "emu:", 4) != 0)
 		fprintf(stderr, "You write uncorrect device URL. You mast put 'com:' or 'emu:' at begin of url.\n");
+    if (strncmp(name, "com:///dev/tty", 14) == 0)
+        fprintf(stderr, "Not use /dev/tty directly. Use simlinks.\n");
     return device_undefined;
   }
 

@@ -1,9 +1,20 @@
 ﻿**English**
-The aim of this programm is loading firmware to UltraRay XIMC controllers.
+The aim of this programm is the loading firmware, cryptographic key or device identify information to UltraRay or XIMC controllers.
 
-*Usage*: `EPCbootLoader <port url> <data path> [Old]`
+*Usage*: `
+./epcboot -a PORT_URL -K KEY
+For set cryptographic key for device.
+OR
+./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
+For set serial number of device and it's hardware version.
+OR
+./epcboot -a PORT_URL -F FILE
+For set new firmware
+OR
+./epcboot -h
+`
 
-*port url* is device name.
+*PORT_URL* is device name.
 Device name has form "com:port", or "emu:file" for virtual device.
 In case of USB-COM port the "port" is the OS device name.
 For example:
@@ -14,10 +25,11 @@ For example:
     "emu:///var/lib/ximc/virtual56.dat",
     "emu:///c:/temp/virtual56.dat",
     "emu:///c:/temp/virtual56.dat?serial=123"
+WARNING: Not use /dev/tty directly. Use simlinks.
 
-*data path* is path to new firmware file that need load to controller.
-
-*Old* for using UPDF on old controller versions vs RBLD on new.
+*KEY* is a cryptographic key.
+*SERIAL* is a device serial number.
+*FILE* is a path to firmware file. Do not use "~" in this puth.
 
 For build this program you need 
 **on Linux** - go to src subdir and run commands:
@@ -29,15 +41,14 @@ For build this program you need
 (https://www.johnlamp.net/cmake-tutorial-3-gui-tool.html)
 
 Open the project. Select some debugging or release version of the project we will build.
+Correct project properties:
 
-Build the library: go to subproject EPCboot and build it.
+`epcboot -> Properties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
 
-Go to EPCbootLoader. Correct project properties:
-
-`PROJECT-> EPCbootloaderProperties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
-
-and add the path $(TargetDir).
+and add the path $(OutDir).
 Build. 
+
+This program launch from console, and write LOG to stderr.
 
 Exchange with target device may be tested:
 - create BOOTLOG environment variable,
@@ -46,11 +57,22 @@ Exchange with target device may be tested:
 - read log file.
 
 **Русский (Russian)**
-Это приложение предназначено для того, чтобы заливать прошивки в контроллеры UltraRay XIMC.
+Это приложение предназначено для того, чтобы заливать прошивки, криптоключи и информацию об устройстве в контроллеры UltraRay и XIMC.
 
-*Использование*: `EPCBootLoader <port url> <data path> [Old]`
+*Использование*: `
+./epcboot -a PORT_URL -K KEY
+For set cryptographic key for device.
+OR
+./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
+For set serial number of device and it's hardware version.
+OR
+./epcboot -a PORT_URL -F FILE
+For set new firmware
+OR
+./epcboot -h
+`
 
-*port url* - имя устройства.
+*PORT_URL* - имя устройства.
 Имя устройства имеет вид "com:port" или "emu:file" для виртуального устройства.
 Для USB-COM устройства "port" это имя устройства в ОС.
 Например:
@@ -61,10 +83,11 @@ Exchange with target device may be tested:
     "emu:///var/lib/ximc/virtual56.dat",
     "emu:///c:/temp/virtual56.dat",
     "emu:///c:/temp/virtual56.dat?serial=123"
+Не используйте com:///dev/tty.. для обращения к устройству, лучше используйте симлинк.
 
-*data path* -- путь к новой прошивке.
-
-*Old* добавляется для старых устройств, использующих команду UPDF вместо RBLD.
+*KEY* - криптографический ключ,
+*SERIAL* - серийный номер устройства,
+*FILE* - путь к прошивке. Не используйте "~" в пути к файлу.
 
 СБОРКА программы 
 **под Linux** - в поддиректории src запустить команды:
@@ -77,13 +100,14 @@ Exchange with target device may be tested:
 
 Открыть проект. Выбрать какую, отладочную (Debug) или основную (Release) версию проекта мы будем собирать.
 
-Собрать библиотеку: перейти к подпроекту EPCBoot и собрать его.
+Поправить свойства проекта:
 
-Перейти к подпроекту EPCBootLoader. Поправить свойства проекта:
+`epcboot -> Properties-> Configurations Properties-> Linker-> General-> Additional Library Directories`
 
-`PROJECT->EPCbootLoaderProperties->Configurations Properties->Linker->General->Additional Library Directories` 
+добавить путь $(OutDir). 
+Собрать.
 
-добавить путь $(TargetDir). Собрать.
+Запуск программы осуществляется из консоли, лог пишется в stderr.
 
 Обмен с целевым устройством, использующий это приложение, может быть протестирован следующим образом:
 - создаём переменную окружения BOOTLOG,
