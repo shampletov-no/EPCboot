@@ -64,11 +64,11 @@ set(SOURCES
 ENDIF()
 
 
-add_library (epcbootlib STATIC ${HEADERS} ${SOURCES})
-
 if(WIN32)
-   target_link_libraries(epcbootlib SetupAPI.lib)
+  add_library (epcbootlib SHARED ${HEADERS} ${SOURCES})
+  target_link_libraries(epcbootlib SetupAPI.lib)
 else()
+  add_library (epcbootlib STATIC ${HEADERS} ${SOURCES})
   target_link_libraries(epcbootlib pthread)
 endif()
 
