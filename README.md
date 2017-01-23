@@ -1,18 +1,19 @@
 ﻿**English**
 The aim of this programm is the loading firmware, cryptographic key or device identify information to UltraRay or XIMC controllers.
 
-*Usage*: `
-./epcboot -a PORT_URL -K KEY
-For set cryptographic key for device.
-OR
-./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
-For set serial number of device and it's hardware version.
-OR
-./epcboot -a PORT_URL -F FILE
-For set new firmware
-OR
-./epcboot -h
-`
+*Usage*: 
+
+    ./epcboot -a PORT_URL -K KEY
+    For set cryptographic key for device.
+    OR
+    ./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
+    For set serial number of device and it's hardware version.
+    OR
+    ./epcboot -a PORT_URL -F FILE
+    For set new firmware
+    OR
+    ./epcboot -h
+
 
 *PORT_URL* is device name.
 Device name has form "com:port", or "emu:file" for virtual device.
@@ -59,18 +60,19 @@ Exchange with target device may be tested:
 **Русский (Russian)**
 Это приложение предназначено для того, чтобы заливать прошивки, криптоключи и информацию об устройстве в контроллеры UltraRay и XIMC.
 
-*Использование*: `
-./epcboot -a PORT_URL -K KEY
-For set cryptographic key for device.
-OR
-./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
-For set serial number of device and it's hardware version.
-OR
-./epcboot -a PORT_URL -F FILE
-For set new firmware
-OR
-./epcboot -h
-`
+*Использование*: 
+
+    ./epcboot -a PORT_URL -K KEY
+    For set cryptographic key for device.
+    OR
+    ./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
+    For set serial number of device and it's hardware version.
+    OR
+    ./epcboot -a PORT_URL -F FILE
+    For set new firmware
+    OR
+    ./epcboot -h
+
 
 *PORT_URL* - имя устройства.
 Имя устройства имеет вид "com:port" или "emu:file" для виртуального устройства.
