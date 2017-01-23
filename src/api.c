@@ -2,8 +2,6 @@
 #include "api.h"
 #include "platform.h"
 #include "bootloader.h"
-#include "commands.h"
-//#include "commands.h"
 
 #if defined(__cplusplus)
 extern "C"

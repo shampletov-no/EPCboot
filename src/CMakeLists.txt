@@ -64,7 +64,7 @@ set(SOURCES
 ENDIF()
 
 
-add_library (epcbootlib SHARED ${HEADERS} ${SOURCES})
+add_library (epcbootlib STATIC ${HEADERS} ${SOURCES})
 
 if(WIN32)
    target_link_libraries(epcbootlib SetupAPI.lib)

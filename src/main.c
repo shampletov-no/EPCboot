@@ -6,7 +6,7 @@
 #include <time.h>
 #include <errno.h>
 
-//#include <stdio.h>
+#include <stdio.h>
 //#include <string.h>
 
 #ifdef WIN32
@@ -55,15 +55,10 @@ static int fw_update(const char *url, const char *path)
         return -1;
     }
 
-#ifdef WIN32
-    res = fopen_s(&f, path, "rb");
-#else
     f = fopen(path, "rb");
-    if (f == NULL) res = errno;
-#endif
-    if (res)
+    if (f == NULL)
     {
-        fprintf(stderr, "Can't open file %s %d. Exit.\n", path, res);
+        fprintf(stderr, "Can't open file %s. Exit.\n", path);
         exit(1);
     }
 
