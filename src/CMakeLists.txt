@@ -11,6 +11,7 @@ else()
 endif()
 
 add_definitions(-DURPC_EXPORTS)
+add_definitions(-D_CRT_SECURE_NO_WARNINGS)
  
 set(HEADERS
     common.h
@@ -66,7 +67,7 @@ ENDIF()
 add_library (epcbootlib SHARED ${HEADERS} ${SOURCES})
 
 if(WIN32)
-  target_link_libraries(epcbootlib SetupAPI.lib)
+   target_link_libraries(epcbootlib SetupAPI.lib)
 else()
   target_link_libraries(epcbootlib pthread)
 endif()

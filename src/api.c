@@ -3,6 +3,7 @@
 #include "platform.h"
 #include "bootloader.h"
 #include "commands.h"
+//#include "commands.h"
 
 #if defined(__cplusplus)
 extern "C"
@@ -84,7 +85,7 @@ static device_t update_open(const char *name)
 	if (strncmp(name, "com:", 4) != 0 && strncmp(name, "emu:", 4) != 0)
 		fprintf(stderr, "You write uncorrect device URL. You mast put 'com:' or 'emu:' at begin of url.\n");
     if (strncmp(name, "com:///dev/tty", 14) == 0)
-        fprintf(stderr, "Not use /dev/tty directly. Use simlinks.\n");
+        fprintf(stderr, "Not try use /dev/tty directly. Use simlinks.\n");
     return device_undefined;
   }
 
@@ -100,6 +101,8 @@ static device_t update_open(const char *name)
       return device_undefined;
     }
   }
+
+  printf("Go to the bootloader mode.\n");
 
   if (close_device(&id) != result_ok)
   {
@@ -179,6 +182,7 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
 
   if (end_session(id, &en_input, &en_output) != result_ok) return result_error;
   fprintf(stderr, "EPCboot: end session Result = %d\n", en_output.Result);
+  printf("Go to the application mode.\n");
 
   if (close_device(&id) != result_ok) return result_error;
   return result_ok;
@@ -258,7 +262,7 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   ssn.SerialNumber = serial;
 
   char *next;
-
+/*
 #ifdef WIN32
   s = strtok_s(hard_id, ".", &next);
   ssn.HardwareMajor = (uint8_t)atoi(s);
@@ -274,6 +278,14 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   s = strtok_r(next, ".", &next);
   ssn.HardwareBugfix = (uint16_t)atoi(s);
 #endif
+*/
+
+  s = strtok(hard_id, ".");
+  ssn.HardwareMajor = (uint8_t)atoi(s);
+  s = strtok(NULL, ".");
+  ssn.HardwareMinor = (uint8_t)atoi(s);
+  s = strtok(NULL, ".");
+  ssn.HardwareBugfix = (uint16_t)atoi(s);
 
   res = set_serial_number(id, &ssn);
   if (res != result_ok)

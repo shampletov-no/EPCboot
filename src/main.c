@@ -6,8 +6,8 @@
 #include <time.h>
 #include <errno.h>
 
-#include <stdio.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <string.h>
 
 #ifdef WIN32
     #include "getopt.h"
@@ -37,6 +37,7 @@ static int check_url(const char* url)
         printf("You mast specify device URL.\n");
         return 0;
     }
+
     return 1;
 }
 
@@ -88,7 +89,6 @@ static int fw_update(const char *url, const char *path)
             free(buf);
             exit(1);
         }
-        //printf("READ TO BUF %d %d\n", len, count);
     }
 
     res = urpc_firmware_update(url, buf, len);
@@ -104,17 +104,9 @@ static int fw_update(const char *url, const char *path)
 static void begin_log (char state, char* url, char* first, char* second)
 {
     time_t sec = time(NULL);
-    fprintf(stderr, "\n%sepcboot 0.2.0 %c %s\n", ctime(&sec), state, url);
+    fprintf(stderr, "\n%sepcboot 0.2.1 %c %s\n", ctime(&sec), state, url);
     fprintf(stderr, "%s\n", first);
     if(state == 'I') fprintf(stderr, "%s\n", second);
-
-#ifndef WIN32
-    fprintf(stderr, "WARNING: In use application on this OS may be next bug:\n");
-    fprintf(stderr, "  After reboot of device OS may loose its tty and give to this device new tty.\n");
-    fprintf(stderr, "  Try call this application next (with new tty) in this case.\n");
-    fprintf(stderr, "  And, please report about this or any other bug to \n");
-    fprintf(stderr, "  zeronineseven@gmail.com  or  vitkorob@mail.ru .\n");
-#endif
 }
 
 

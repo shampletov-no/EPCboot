@@ -1,9 +1,6 @@
 ﻿#ifndef API_H
 #define API_H
 
-//#include <stdint.h>
-//#include "bootloader.h"
-
 /** @file bootloader.h
 * \~english
 * @brief Header file for bootloader library
