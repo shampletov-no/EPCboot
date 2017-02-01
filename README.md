@@ -100,7 +100,7 @@ Exchange with target device may be tested:
     
 **под Windows** - с помощью CMake-gui для Windows создать проект для Microsoft Visual Studio 2013. 
 (см. https://www.johnlamp.net/cmake-tutorial-3-gui-tool.html)
-Записываем откуда брать исходники, куда ложить бинарники и нажимаем кнопку Configue.
+Записываем откуда брать исходники, куда класть бинарники и нажимаем кнопку Configue.
 После этого GUI CMake предложит выбрать компилятор. По умолчанию MSVS-2013, Win32.
 **Этот компилятор следует оставить.**
 После Configure нажать Generate.
