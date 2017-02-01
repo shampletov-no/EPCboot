@@ -69,5 +69,7 @@ int parse_uri(const char *name,
 char *uri_encode(const char *str);
 char *uri_decode(const char *str);
 
+char *uri_copy(const char *str);
+
 #endif
 

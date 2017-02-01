@@ -1169,7 +1169,7 @@ result_t URPC_CALLCONV close_device (device_t* id)
 {
 	result_t result;
 	lock_global();
-	log_debug("close_device id=%p");
+	log_debug(L"close_device id=%p");
 	fprintf(stderr, "close_device id=%p\n");
 	if (id == NULL || *id == device_undefined)
 		result = result_error;
