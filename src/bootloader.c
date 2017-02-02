@@ -17,9 +17,9 @@ extern "C" {
 result_t URPC_CALLCONV reset(device_t id) {
     result_t result;
     byte out_buffer[4];
-    byte in_buffer[4];
+//    byte in_buffer[4];
     byte *p;
-    unsigned int i;
+//    unsigned int i;
 
     lock(id);
     // Sending request
@@ -110,7 +110,7 @@ result_t URPC_CALLCONV end_session(device_t id, in_end_session_t* input, out_end
 result_t URPC_CALLCONV write_data(device_t id, write_data_t* input) {
     result_t result;
     byte out_buffer[142];
-    byte in_buffer[4];
+//    byte in_buffer[4];
     byte *p;
     unsigned int i;
 
@@ -158,7 +158,7 @@ result_t URPC_CALLCONV get_bootloader_version(device_t id, get_bootloader_versio
     byte out_buffer[4];
     byte in_buffer[10];
     byte *p;
-    unsigned int i;
+//    unsigned int i;
 
     lock(id);
     // Sending request
@@ -253,7 +253,7 @@ result_t URPC_CALLCONV init_random(device_t id, init_random_t* output) {
 result_t URPC_CALLCONV set_serial_number(device_t id, set_serial_number_t* input) {
     result_t result;
     byte out_buffer[50];
-    byte in_buffer[4];
+//    byte in_buffer[4];
     byte *p;
     unsigned int i;
 
@@ -278,7 +278,7 @@ result_t URPC_CALLCONV get_serial_number(device_t id, get_serial_number_t* outpu
     byte out_buffer[4];
     byte in_buffer[10];
     byte *p;
-    unsigned int i;
+//    unsigned int i;
 
     lock(id);
     // Sending request
@@ -299,9 +299,9 @@ result_t URPC_CALLCONV get_serial_number(device_t id, get_serial_number_t* outpu
 result_t URPC_CALLCONV update_firmware(device_t id) {
     result_t result;
     byte out_buffer[4];
-    byte in_buffer[4];
+//    byte in_buffer[4];
     byte *p;
-    unsigned int i;
+//    unsigned int i;
 
     lock(id);
     // Sending request
@@ -374,9 +374,9 @@ result_t URPC_CALLCONV get_identity_information(device_t id, get_identity_inform
 result_t URPC_CALLCONV reboot_to_bootloader(device_t id) {
     result_t result;
     byte out_buffer[4];
-    byte in_buffer[4];
+//    byte in_buffer[4];
     byte *p;
-    unsigned int i;
+//    unsigned int i;
 
     lock(id);
     // Sending request
@@ -412,7 +412,7 @@ result_t URPC_CALLCONV get_dummy(device_t id, dummy_t* output) {
 result_t URPC_CALLCONV set_dummy(device_t id, dummy_t* input) {
     result_t result;
     byte out_buffer[10];
-    byte in_buffer[4];
+//    byte in_buffer[4];
     byte *p;
     unsigned int i;
 

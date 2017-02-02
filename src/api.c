@@ -259,7 +259,7 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   memcpy(ssn.Key, key_struct.Key, WKEY_SIZE);
   ssn.SerialNumber = serial;
 
-  char *next;
+//  char *next;
 /*
 #ifdef WIN32
   s = strtok_s(hard_id, ".", &next);
