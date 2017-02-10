@@ -2,6 +2,7 @@
 #include "api.h"
 #include "platform.h"
 #include "bootloader.h"
+#include "commands.h"
 
 #if defined(__cplusplus)
 extern "C"
@@ -176,10 +177,12 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
     }
   }
 
-  fprintf(stderr, "EPCboot: firmware correctly wrote. %d\n",  len);
+  if (res =(end_session(id, &en_input, &en_output)) != result_ok || en_output.Result != 0)
+  {
+      fprintf(stderr, "EPCboot: end session rc = %d Result = %d\n", res, en_output.Result);
+      return result_error;
+  }
 
-  if (end_session(id, &en_input, &en_output) != result_ok) return result_error;
-  fprintf(stderr, "EPCboot: end session Result = %d\n", en_output.Result);
   printf("Go to the application mode.\n");
 
   if (close_device(&id) != result_ok) return result_error;
