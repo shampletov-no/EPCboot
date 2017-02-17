@@ -62,7 +62,7 @@ Exchange with target device may be tested:
 
 *Использование*: 
 
-   epcboot -K -a PORT_URL -k KEY
+    epcboot -K -a PORT_URL -k KEY
     For set cryptographic key for device.
     OR
     epcboot -I -a PORT_URL -k KEY -s SERIAL -v MAJOR.MINOR.REVISION
