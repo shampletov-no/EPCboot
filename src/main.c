@@ -18,16 +18,16 @@
 static void print_usage(const char* exe)
 {
     printf("Usage:\n");
-    printf("%s -a PORT_URL -K KEY\n", exe);
+    printf("%s -K -a PORT_URL -k KEY\n", exe);
     printf("For set cryptographic key for device.\n");
     printf("OR\n");
-    printf("%s -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION\n", exe);
+    printf("%s  -I -a PORT_URL -k KEY -s SERIAL -v MAJOR.MINOR.REVISION\n", exe);
     printf("For set serial number of device and it's hardware version.\n");
     printf("OR\n");
-    printf("%s -a PORT_URL -F FILE\n", exe);
+    printf("%s -F -a PORT_URL -f FILE\n", exe);
     printf("For set new firmware\n");
     printf("OR\n");
-    printf("%s -h", exe);
+    printf("%s -h\n", exe);
 }
 
 static int check_url(const char* url)
@@ -99,7 +99,7 @@ static int fw_update(const char *url, const char *path)
 static void begin_log (char state, char* url, char* first, char* second)
 {
     time_t sec = time(NULL);
-    fprintf(stderr, "\n%sepcboot 0.2.2 %c %s\n", ctime(&sec), state, url);
+    fprintf(stderr, "\n%sepcboot 0.2.3 %c %s\n", ctime(&sec), state, url);
     fprintf(stderr, "%s\n", first);
     if(state == 'I') fprintf(stderr, "%s\n", second);
 }
@@ -116,25 +116,30 @@ int main(int argc, char** argv) {
     char *serial   = NULL;
     char *hard     = NULL;
 
-    while ((opt = getopt(argc, argv, "K:I:F:s:v:a:h")) != -1) {
+    while ((opt = getopt(argc, argv, "KIFs:v:a:k:f:h")) != -1) {
         switch (opt) {
             case 'K':
-                key = optarg;
                 state = 'K';
                 break;
 
             case 'I':
-                key = optarg;
                 state = 'I';
                 break;
 
             case 'F':
-                filename = optarg;
                 state = 'F';
                 break;
 
             case 'a':
                 url = optarg;
+                break;
+
+            case 'k':
+                key = optarg;
+                break;
+
+            case 'f':
+                filename = optarg;
                 break;
 
             case 's':
