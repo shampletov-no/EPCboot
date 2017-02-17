@@ -3,16 +3,16 @@ The aim of this programm is the loading firmware, cryptographic key or device id
 
 *Usage*: 
 
-    ./epcboot -a PORT_URL -K KEY
+    epcboot -K -a PORT_URL -k KEY
     For set cryptographic key for device.
     OR
-    ./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
+    epcboot -I -a PORT_URL -k KEY -s SERIAL -v MAJOR.MINOR.REVISION
     For set serial number of device and it's hardware version.
     OR
-    ./epcboot -a PORT_URL -F FILE
+    epcboot -F -a PORT_URL -f FILE
     For set new firmware
     OR
-    ./epcboot -h
+    epcboot -h
 
 
 *PORT_URL* is device name.
@@ -62,16 +62,16 @@ Exchange with target device may be tested:
 
 *Использование*: 
 
-    ./epcboot -a PORT_URL -K KEY
+   epcboot -K -a PORT_URL -k KEY
     For set cryptographic key for device.
     OR
-    ./epcboot -a PORT_URL -I KEY -s SERIAL -v MAJOR.MINOR.REVISION
+    epcboot -I -a PORT_URL -k KEY -s SERIAL -v MAJOR.MINOR.REVISION
     For set serial number of device and it's hardware version.
     OR
-    ./epcboot -a PORT_URL -F FILE
+    epcboot -F -a PORT_URL -f FILE
     For set new firmware
     OR
-    ./epcboot -h
+    epcboot -h
 
 
 *PORT_URL* - имя устройства.
