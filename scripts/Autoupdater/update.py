@@ -4,10 +4,12 @@ import pyurio
 import sys
 import os
 from distutils.version import StrictVersion
-from ctypes import byref
+from ctypes import byref, cast, POINTER, c_int
 from subprocess import call
+from os import devnull
 
 DEFAULT_PATH = os.path.join("/", "dev")
+NUMBER_OF_ARGS = 2
 
 libraries = {
     'urio': pyurio,
@@ -18,11 +20,6 @@ libraries = {
 devices = libraries.keys()
 
 lib = None
-
-# debug
-NUMBER_OF_ARGS = 1
-firmware = "urio-1.2.3-hw2.3.x.cod"
-DEFAULT_PATH = "."
 
 
 class Return:
@@ -61,8 +58,13 @@ class Device:
 
     @staticmethod
     def device_uri(name):
-        # debug
-        return ("emu:///" + name).encode()
+        return ("com:///" + name).encode()
+
+    def __str__(self):
+        if self.serial is None:
+            return str(self._path)
+        else:
+            return str(self.serial)
 
     def open(self):
         global lib
@@ -71,7 +73,7 @@ class Device:
 
     def close(self):
         global lib
-        lib.close_device(self._device_id)
+        lib.close_device(byref(cast(self._device_id, POINTER(c_int))))
 
     def get_serial(self):
         # unfortunately, there are no standard for getting serial in protocol
@@ -81,7 +83,7 @@ class Device:
             identity = lib.pymodule.get_serial_number_t()
             result = lib.get_serial_number(self._device_id, byref(identity))
             if result != lib.pymodule.Result.Ok:
-                error("ошибка {0} при получении серийного номера".format(result))
+                error("error {0} while getting serial".format(result))
                 return Return.Error
             self.serial = identity.SerialNumber
             return self.serial
@@ -90,7 +92,7 @@ class Device:
         identity = lib.pymodule.get_identity_information_t()
         result = lib.get_identity_information(self._device_id, byref(identity))
         if result != lib.pymodule.Result.Ok:
-            error("ошибка {0} при получении серийного номера".format(result))
+            error("error {0} while getting serial".format(result))
             return Return.Error
 
         self.serial = identity.SerialNumber
@@ -104,16 +106,16 @@ class Device:
             identity = lib.pymodule.firmware_version_t()
             result = lib.firmware_version(self._device_id, byref(identity))
             if result != lib.pymodule.Result.Ok:
-                error("ошибка {0} при получении версии прошивки".format(result))
+                error("error {0} while getting firmware version".format(result))
                 return Return.Error
-            self.firmware = "{0}.{1}.{2}".format(identity.Major, identity.Minor, identity.Bugfix)
+            self.firmware = "{0}.{1}.{2}".format(identity.Major, identity.Minor, identity.Release)
             return self.firmware
 
         # urio, urlaser
         identity = lib.pymodule.get_identity_information_t()
         result = lib.get_identity_information(self._device_id, byref(identity))
         if result != lib.pymodule.Result.Ok:
-            error("ошибка {0} при получении версии прошивки".format(result))
+            error("error {0} while getting firmware version".format(result))
             return Return.Error
         self.firmware = "{0}.{1}.{2}".format(identity.FirmwareMajor, identity.FirmwareMinor, identity.FirmwareBugfix)
         return self.firmware
@@ -126,32 +128,38 @@ class Device:
             identity = lib.pymodule.device_information_impl_t()
             result = lib.device_information_impl(self._device_id, byref(identity))
             if result != lib.pymodule.Result.Ok:
-                error("ошибка {0} при получении версии железа".format(result))
+                error("error {0} while getting hardware version".format(result))
                 return Return.Error
-            self.hardware = "{0}.{1}.{2}".format(identity.Major, identity.Minor, identity.Bugfix)
+            self.hardware = "{0}.{1}.{2}".format(identity.Major, identity.Minor, identity.Release)
             return self.hardware
 
         # urio, urlaser
         identity = lib.pymodule.get_identity_information_t()
         result = lib.get_identity_information(self._device_id, byref(identity))
         if result != lib.pymodule.Result.Ok:
-            error("ошибка {0} при получении версии железа".format(result))
+            error("error {0} while getting hardware version".format(result))
             return Return.Error
 
         self.hardware = "{0}.{1}.{2}".format(identity.HardwareMajor, identity.HardwareMinor, identity.HardwareBugfix)
         return self.hardware
 
     def epc_boot(self, firmware):
-        return call("epcboot -F -a {port} -f {file}".format(port=Device.device_uri(self._path), file=firmware))
+        return call(["epcboot", "-F", "-a", Device.device_uri(self._path), "-f", firmware],
+                    stdout=open(devnull, 'w'),
+                    stderr=open(devnull, 'w'))
 
 
 def critical_error(str):
-    print("Критическая ошибка: {0}".format(str))
+    print("Critical error: {0}".format(str))
     exit(1)
 
 
 def error(str):
-    print("Ошибка: {0}".format(str))
+    print("Error: {0}".format(str))
+
+
+def log(str):
+    print(str)
 
 
 def parse_name(str):
@@ -159,7 +167,7 @@ def parse_name(str):
     try:
         name, version, hardware = str.split("-", 2)
     except ValueError:
-        critical_error("неправильное имя файла")
+        critical_error("wrong file name")
 
     return name, version, hardware
 
@@ -182,94 +190,107 @@ def check_firmware(version1, version2):
     return StrictVersion(version1) > StrictVersion(version2)
 
 
-print("Автозагрузчик")
+log("Autoupdater")
 
 if len(sys.argv) != NUMBER_OF_ARGS:
-    critical_error("неправильные аргументы")
+    critical_error("wrong arguments")
 
-# firmware = sys.argv[1]
+firmware = sys.argv[1]
 
 module_name, firmware_version, hardware_version = parse_name(firmware)
 
-print("\nИмя устройства: ", module_name)
-print("Версия прошивки: ", firmware_version)
-print("Версия железа: ", hardware_version)
+print("\n")
+log("Device name: {0}".format(module_name))
+log("Firmware version: {0}".format(firmware_version))
+log("Hardware version: {0}".format(hardware_version))
 
 if module_name not in devices:
-    critical_error("{name} нет в списке известных устройств".format(name=module_name))
+    critical_error("{name} unknown device name".format(name=module_name))
 
-print("\nПоиск устройств {name} ...".format(name=module_name))
+print("\n")
+log("Search device {name} ...".format(name=module_name))
 
 path = os.path.join(DEFAULT_PATH, module_name)
 
 if not os.path.exists(path):
-    critical_error("не обнаружено устройств {name} (файл не существует)".format(name=module_name))
+    critical_error("no devices {name} (file not exist)".format(name=module_name))
 
 if not os.path.isdir(path):
-    critical_error("файл {name} не является каталогом устройств".format(name=path))
+    critical_error("file {name} is not directory".format(name=path))
 
 device_list = [Device(os.path.join(path, n)) for n in os.listdir(path)]
 
-print("Найдено {0} устройств {name}".format(len(device_list), name=module_name))
+log("Find {0} devices {name}".format(len(device_list), name=module_name))
 
-print("\nЗагрузка библиотеки для {0}...".format(module_name))
+print("\n")
+log("Load library for {0}...".format(module_name))
 
 try:
     lib = Library(module_name)
 except OSError as err:
-    critical_error("не удаётся загрузить библиотеку")
+    critical_error("can't load library")
 
-print("\nСбор сведений об устройствах ...")
+print("\n")
+log("Taking information about devices...")
 for device in device_list.copy():
 
+    print("\n")
+    log("Open {0}".format(device))
     if device.open() < 0:
-        error("Невозожно открыть устройство {0}, пропуск".format(device))
+        error("Can't open device {0}, skip".format(device))
         device_list.remove(device)
         continue
 
     if device.get_serial() == Return.Error:
-        error("Не удалось получить серийный номер для {0}, пропуск".format(device))
+        error("Can't take serial {0}, skip".format(device))
         device_list.remove(device)
         continue
+    log("Serial: {0}".format(device.serial))
 
     if device.get_hardware_version() == Return.Error:
-        error("Не удалось получить версию железа для {0}, пропуск".format(device.serial))
+        error("Can't take hardware version {0}, skip".format(device))
         device_list.remove(device)
         continue
+    log("Hardware: {0}".format(device.hardware))
 
     if not check_hardware(hardware_version, device.hardware):
-        print("Не совпадают версии железа для {0}".format(device.serial))
-        print("Версия железа: {0}, требуется: {1}, пропуск".format(device.hardware, hardware_version))
+        log("Bad hardware version for {0}".format(device))
+        log("Hardware: {0}, necessary: {1}, skip".format(device.hardware, hardware_version))
         device_list.remove(device)
         continue
 
     if device.get_firmware_version() == Return.Error:
-        error("Не удалось получить версию прошивки для {0}, пропуск".format(device.serial))
+        error("Can't take firmware version {0}, skip".format(device))
         device_list.remove(device)
         continue
+    log("Firmware: {0}".format(device.firmware))
 
     if not check_firmware(firmware_version, device.firmware):
-        print("Устройство {0} не нуждается в обновлении, пропуск".format(device.serial))
+        log("Device {0} does not need to be updated, skip".format(device))
         device_list.remove(device)
         continue
 
+    log("Close {0}".format(device))
     device.close()
 
-print("\nОбновление...")
-print("Устройств для обновления: {0}".format(len(device_list)))
+print("\n")
+log("Update...")
+log("Devices for update: {0}".format(len(device_list)))
 if not len(device_list):
-    print("Нет устройств для обновления, выход")
+    log("No devices, exit")
     exit()
 
 for device in device_list.copy():
-    print("Обновление {0}".format(device.serial))
+    log("Call EPCBoot for {0}...".format(device))
     status = device.epc_boot(firmware)
     if status == Return.Ok:
-        print("Успех")
+        log("Success")
     else:
-        error("обновление завершилось с кодом {0}".format(status))
+        error("epcboot return {0}".format(status))
         device_list.remove(device)
         continue
 
-print("\nВсего обновлено: {0} устройств".format(len(device_list)))
-print(*[device.serial for device in device_list.sort(reverse=True)])
+log("\nDevices updated: {0}".format(len(device_list)))
+log("Devices: {0}".format(*[device for device in device_list]))
+
+log("Exit")

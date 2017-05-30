@@ -13,8 +13,6 @@ def project_shared_lib():
     else:
         return CDLL("liburio.so")
 
-lib = project_shared_lib()
-
 # Common declarations
 
 class Result:
