@@ -164,6 +164,7 @@ def log(str):
 
 def parse_name(str):
     # format: urmc-1.2.3-hw2.3.x.cod
+    str = os.path.basename(str)
     try:
         name, version, hardware = str.split("-", 2)
     except ValueError:
