@@ -180,6 +180,7 @@ result_t URPC_CALLCONV urpc_firmware_update(const char* name, const uint8_t* dat
   if (res =(end_session(id, &en_input, &en_output)) != result_ok || en_output.Result != 0)
   {
       fprintf(stderr, "EPCboot: end session rc = %d Result = %d\n", res, en_output.Result);
+      close_device(&id);
       return result_error;
   }
 
@@ -205,13 +206,18 @@ result_t URPC_CALLCONV urpc_write_key(const char* name, const char* key)
   memset((void*)(&out), 0, sizeof(out));
   memset((void*)(&irnd), 0, sizeof(irnd));
 
-  if (key_parse(key, in.Key) != 0) return result_error;
+  if (key_parse(key, in.Key) != 0)
+  {
+    close_device(&id);
+    return result_error;
+  }
 
   //irnd -- use random keys.
   res = init_random(id, &irnd);
   if (res != result_ok)
   {
     fprintf(stderr, "Can't init random. %d", res);
+    close_device(&id);
     return res;
   }
 
@@ -219,7 +225,11 @@ result_t URPC_CALLCONV urpc_write_key(const char* name, const char* key)
 
   printf("Please wait 1-2 min.\n");
   res = write_key(id, &in, &out);
-  if (res != result_ok) return res;
+  if (res != result_ok)
+  {
+    close_device(&id);
+    return res;
+  }
   printf("Ok\n");
 
   res = close_device(&id);
@@ -247,14 +257,19 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   memset((void*)(&irnd), 0, sizeof(irnd));
   memset((void*)(&key_struct), 0, sizeof(key_struct));
 
-  if (key_parse(key, key_struct.Key) != 0) return result_error;
+  if (key_parse(key, key_struct.Key) != 0)
+  {
+    close_device(&id);
+    return result_error;
+  }
 
   //irnd -- use random keys.
   res = init_random(id, &irnd);
   if (res != result_ok)
   {
     fprintf(stderr, "Can't init random. %d", res);
-        return res;
+    close_device(&id);
+    return res;
   }
 
   encrypted_key(&irnd, &key_struct);
@@ -292,6 +307,7 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
   if (res != result_ok)
   {
     fprintf(stderr, "EPCBoot: Can't set ident information to device. set_serial_number() return %d\n", res);
+    close_device(&id);
     return res;
   }
 
@@ -304,12 +320,14 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
 	  if ( res != result_ok)
 	  {
 		  fprintf(stderr, "EPCBoot: Can't get_serial_number(), return %d", res);
+    		  close_device(&id);
 		  return res;
 	  }
 
 	  if (legacy_sn_out.SerialNumber == ssn.SerialNumber)
 	  {
 		  fprintf(stderr, "Identy information was wrote correctly.\n");
+    		  close_device(&id);
 		  return result_ok;
 	  }
 	  else
@@ -317,6 +335,7 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
 		  fprintf(stderr, "ERROR: try write %d   %d.%d.%d    Read %d\n",
 			  ssn.SerialNumber, ssn.HardwareMajor, ssn.HardwareMinor, ssn.HardwareBugfix,
 			  legacy_sn_out.SerialNumber);
+    		  close_device(&id);
 		  return result_error;
 	  }
   }
@@ -327,6 +346,7 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
     if (res != result_ok)
     {
       fprintf(stderr, "EPCBoot: Can't get ident information from device. get_identity_information() return %d\n", res);
+      close_device(&id);
       return res;
     }
 
@@ -336,6 +356,7 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
     out.SerialNumber == ssn.SerialNumber)
     {
 		fprintf(stderr, "Identy information was wrote correctly.\n");
+    		close_device(&id);
 		return result_ok;
     }
 	else
@@ -343,10 +364,11 @@ result_t URPC_CALLCONV urpc_write_ident(const char* name, const char* key, unsig
 		fprintf(stderr, "ERROR: try write %d   %d.%d.%d    Read %d   %d.%d.%d\n",
 			ssn.SerialNumber, ssn.HardwareMajor, ssn.HardwareMinor, ssn.HardwareBugfix,
 			out.SerialNumber, out.HardwareMajor, out.HardwareMinor, out.HardwareBugfix);
+    		close_device(&id);
 		return result_error;
 	}
   }
-
+  close_device(&id);
   return result_ok;
 }
 
